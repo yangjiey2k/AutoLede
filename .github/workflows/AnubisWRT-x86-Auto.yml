@@ -18,8 +18,8 @@ on:
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
-  CONFIG_FILE: config/Anubis.config
-  DIY_SH: script/Anubis.sh
+  CONFIG_FILE: config/lede.config
+  DIY_SH: script/lede.sh
   # IPV6MOD_IN_FIRMWARE: false
   # KMODS_IN_FIRMWARE: true
   UPLOAD_WETRANSFER: false
@@ -80,10 +80,6 @@ jobs:
         chmod +x ../script/*.sh
         ../script/hook-feeds.sh
         
-    - name: MOD index file
-      run: |
-         cd $OPENWRTROOT/package/lean/autocore/files/x86
-         sed -i '/Load Average/i\\t\t<tr><td width="33%"><%:Project URL %></td><td><a href="https://github.com/yangjiey2k/AutoLede" target="_blank"><%:Firmware Github%></a></td></tr>' index.htm
     - name: Install Feeds
       run: |
         cd $OPENWRTROOT
