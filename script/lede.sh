@@ -22,8 +22,8 @@ popd
 
 # Modify default IP
 sed -i 's/192.168.1.1/192.168.1.202/g' package/base-files/files/bin/config_generate
-sed -i '/uci commit system/i\uci set system.@system[0].hostname='AnubisWrt'' package/lean/default-settings/files/zzz-default-settings
-sed -i "s/OpenWrt /KoNan - AnubisWrt /g" package/lean/default-settings/files/zzz-default-settings
+sed -i '/uci commit system/i\uci set system.@system[0].hostname='ANUBISWrt'' package/lean/default-settings/files/zzz-default-settings
+sed -i "s/OpenWrt /KoNan - ANUBISWrt /g" package/lean/default-settings/files/zzz-default-settings
 # find package/*/ feeds/*/ -maxdepth 6 -path "*luci-app-smartdns/luasrc/controller/smartdns.lua" | xargs -i sed -i 's/\"SmartDNS\")\, 4/\"SmartDNS\")\, 3/g' {} 
 # Test kernel 5.15
 # sed -i 's/5.10/5.15/g' target/linux/x86/Makefile
