@@ -22,8 +22,8 @@ popd
 
 # Modify default IP
 sed -i 's/192.168.1.1/192.168.1.202/g' package/base-files/files/bin/config_generate
-sed -i '/uci commit system/i\uci set system.@system[0].hostname='阿努比斯'' package/lean/default-settings/files/zzz-default-settings
-sed -i "s/OpenWrt /KoNan - 阿努比斯 /g" package/lean/default-settings/files/zzz-default-settings
+sed -i '/uci commit system/i\uci set system.@system[0].hostname='NibiruWrt'' package/lean/default-settings/files/zzz-default-settings
+sed -i "s/OpenWrt /KoNan - Nibiru /g" package/lean/default-settings/files/zzz-default-settings
 # find package/*/ feeds/*/ -maxdepth 6 -path "*luci-app-smartdns/luasrc/controller/smartdns.lua" | xargs -i sed -i 's/\"SmartDNS\")\, 4/\"SmartDNS\")\, 3/g' {} 
 # Test kernel 5.15
 # sed -i 's/5.10/5.15/g' target/linux/x86/Makefile
@@ -44,7 +44,7 @@ find package/*/ feeds/*/ -maxdepth 6 -path "*helloworld/luci-app-ssr-plus/luasrc
 # Custom configs
 # git am $GITHUB_WORKSPACE/patches/lean/*.patch
 # git am $GITHUB_WORKSPACE/patches/*.patch
-echo -e " KoNan's KoNanWrt built on "$(date +%Y.%m.%d)"\n -----------------------------------------------------" >> package/base-files/files/etc/banner
+echo -e " KoNan's NibiruWrt built on "$(date +%Y.%m.%d)"\n -----------------------------------------------------" >> package/base-files/files/etc/banner
 echo 'net.bridge.bridge-nf-call-iptables=0' >> package/base-files/files/etc/sysctl.conf
 echo 'net.bridge.bridge-nf-call-ip6tables=0' >> package/base-files/files/etc/sysctl.conf
 echo 'net.bridge.bridge-nf-call-arptables=0' >> package/base-files/files/etc/sysctl.conf
