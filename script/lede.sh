@@ -12,6 +12,10 @@ pushd package/community
 rm -rf ../../feeds/luci/applications/luci-app-unblockmusic
 git clone https://github.com/UnblockNeteaseMusic/luci-app-unblockneteasemusic.git
 
+# Add luci-app-passwall
+rm -rf ../../feeds/luci/applications/luci-app-passwall
+git clone https://github.com/xiaorouji/openwrt-passwall.git
+
 # Add luci-theme-argon
 rm -rf ../../feeds/luci/themes/luci-theme-argon
 git clone --depth=1 -b 18.06 https://github.com/jerrykuku/luci-theme-argon
