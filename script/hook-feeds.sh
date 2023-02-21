@@ -22,9 +22,6 @@ sed -i '/src-git luci/d' feeds.conf.default
 echo "src-link luci $luci_feed" >> feeds.conf.default
 sed -i '/helloworld/d' feeds.conf.default
 echo "src-git helloworld https://github.com/fw876/helloworld.git" >> feeds.conf.default
-sed -i '/openwrt-passwall/d' feeds.conf.default
-echo "src-git passwall_packages https://github.com/xiaorouji/openwrt-passwall.git;packages" >> feeds.conf.default
-echo "src-git passwall_luci https://github.com/xiaorouji/openwrt-passwall.git;luci" >> feeds.conf.default
 
 
 
