@@ -1,48 +1,39 @@
-#
-# Copyright (c) 2019-2021 P3TERX <https://p3terx.com>
-#
-# This is free software, licensed under the MIT License.
-# See /LICENSE for more information.
-#
-# https://github.com/P3TERX/Actions-OpenWrt
-# File: .github/workflows/update-checker.yml
-# Description: Source code update checker
-#
-
 name: Update Checker
+
+on:
+  workflow_dispatch:
+    inputs:
+      ssh:
+        description: 'SSH connection to Actions'
+        required: false
+        default: 'false'
+#  schedule:
+#    - cron: 0 */18 * * *
 
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
   REPO_BRANCH: master
-
-on:
-  workflow_dispatch:
-#  schedule:
-#    - cron: 0 */18 * * *
 
 jobs:
   check:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Checkout
+      uses: actions/checkout@v2
 
     - name: Get Commit Hash
       id: getHash
       run: |
-        git clone --depth 1 $REPO_URL -b $REPO_BRANCH .
-        echo "::set-output name=commitHash::$(git rev-parse HEAD)"
+        git rev-parse HEAD > .commitHash
+        echo "::set-output name=commitHash::$(cat .commitHash)"
 
     - name: Compare Commit Hash
       id: cacheHash
       uses: actions/cache@v2
       with:
         path: .commitHash
-        key: HEAD-${{ steps.getHash.outputs.commitHash }}
-
-    - name: Save New Commit Hash
-      if: steps.cacheHash.outputs.cache-hit != 'true'
-      run: |
-        echo ${{ steps.getHash.outputs.commitHash }} | tee .commitHash
+        key: ${{ runner.os }}-${{ steps.getHash.outputs.commitHash }}
 
     - name: Trigger build
       if: steps.cacheHash.outputs.cache-hit != 'true'
@@ -52,7 +43,14 @@ jobs:
         event-type: Source Code Update
 
     - name: Delete workflow runs
-      uses: GitRML/delete-workflow-runs@main
+      uses: GitRML/delete-workflow-runs@v1
       with:
         retain_days: 1
         keep_minimum_runs: 1
+
+    - name: SSH connection to Actions
+      uses: P3TERX/ssh2actions@v1.0.0
+      if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh != 'false') || contains(github.event.action, 'ssh')
+      env:
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
