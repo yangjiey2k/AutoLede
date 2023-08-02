@@ -17,23 +17,20 @@ env:
 jobs:
   check:
     runs-on: ubuntu-latest
-
     steps:
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3 # Use the latest version of checkout action
 
-    - name: Get Commit Hash
-      id: getHash
+    - name: Get and Compare Commit Hash
+      id: cacheHash
       run: |
         git rev-parse HEAD > .commitHash
-        echo "::set-output name=commitHash::$(cat .commitHash)"
-
-    - name: Compare Commit Hash
-      id: cacheHash
+        hash=$(cat .commitHash)
+        echo "::set-output name=commitHash::${hash}"
       uses: actions/cache@v2
       with:
         path: .commitHash
-        key: ${{ runner.os }}-${{ steps.getHash.outputs.commitHash }}
+        key: ${{ runner.os }}-${{ steps.cacheHash.outputs.commitHash }}
 
     - name: Trigger build
       if: steps.cacheHash.outputs.cache-hit != 'true'
@@ -43,13 +40,13 @@ jobs:
         event-type: Source Code Update
 
     - name: Delete workflow runs
-      uses: GitRML/delete-workflow-runs@v1
+      uses: GitRML/delete-workflow-runs@v1.1 # Use the latest version of delete-workflow-runs action
       with:
         retain_days: 1
         keep_minimum_runs: 1
 
     - name: SSH connection to Actions
-      uses: P3TERX/ssh2actions@v1.0.0
+      uses: P3TERX/ssh2actions@v2 # Use the latest version of ssh2actions action
       if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh != 'false') || contains(github.event.action, 'ssh')
       env:
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
