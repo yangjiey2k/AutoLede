@@ -79,7 +79,7 @@ jobs:
         ./scripts/feeds install -a
         [ -e files ] && mv files $OPENWRTROOT/files
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE $OPENWRTROOT/.config
-        chmod +x script/*.sh
+        chmod +x ../script/*.sh
         ../$DIY_SH
         
         make defconfig
