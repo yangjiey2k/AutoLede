@@ -77,7 +77,7 @@ find package/luci-theme-*/* -type f -name '*luci-theme-*' -print -exec sed -i '/
 sed -i "/exit/iuci set network.lan.netmask=\'255.255.255.0\'\nuci set network.lan.dns=\'192.168.1.207 119.29.29.29 223.5.5.5\'\nuci set network.lan.gateway=\'192.168.1.201\'\nuci commit network" package/lean/default-settings/files/zzz-default-settings
 
 # 修改默认IP
-sed -i 's/192.168.1.1/192.168.1.202/g' package/base-files/files/bin/config_generate
+sed -i 's/192.168.1.1/192.168.1.204/g' package/base-files/files/bin/config_generate
 sed -i '/uci commit system/i\uci set system.@system[0].hostname='NibiruWrt'' package/lean/default-settings/files/zzz-default-settings
 sed -i "s/OpenWrt /KoNan @ NibiruWrt /g" package/lean/default-settings/files/zzz-default-settings
 
