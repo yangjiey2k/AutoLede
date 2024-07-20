@@ -74,44 +74,9 @@ find package/luci-theme-*/* -type f -name '*luci-theme-*' -print -exec sed -i '/
 # sed -i 's/5.15/6.1/g' target/linux/arm/Makefile
 
 # Network Configuration
-cat << 'EOF' > package/base-files/files/etc/init.d/custom_network_config
-#!/bin/sh /etc/rc.common
+sed -i "/exit/iuci set network.lan.netmask=\'255.255.255.0\'\nuci set network.lan.dns=\'192.168.1.207 119.29.29.29 223.5.5.5\'\nuci set network.lan.gateway=\'192.168.1.201\'\nuci commit network" package/lean/default-settings/files/zzz-default-settings
 
-START=99
-FLAG_FILE="/etc/network_config_done"
-
-start() {
-  if [ ! -f $FLAG_FILE ]; then
-    if ip link show br-lan > /dev/null 2>&1 || ip link show eth0 > /dev/null 2>&1; then
-      # 应用网络配置
-      echo "Applying network configuration..."
-      uci set network.lan.netmask='255.255.255.0'
-      uci set network.lan.dns='192.168.1.207 223.5.5.5'
-      uci set network.lan.gateway='192.168.1.201'
-
-      if ip link show eth0 > /dev/null 2>&1; then
-        uci set network.lan.ifname='eth0'
-        uci set network.lan.proto='static'
-        uci set network.lan.ipaddr='192.168.1.228'
-      fi
-
-      uci commit network
-
-      # 修改默认 IP 和主机名
-      sed -i 's/192.168.1.1/192.168.1.228/g' /etc/config/network
-      uci set system.@system[0].hostname='NibiruWrt'
-      uci commit system
-      sed -i "s/OpenWrt /KoNan @ NibiruWrt /g" /etc/openwrt_release
-
-      # 创建标志文件
-      touch $FLAG_FILE
-    else
-      echo "No suitable network interface found."
-    fi
-  else
-    echo "Network configuration already applied."
-  fi
-}
-EOF
-
-chmod +x package/base-files/files/etc/init.d/custom_network_config
+# 修改默认IP
+sed -i 's/192.168.1.1/192.168.1.228/g' package/base-files/files/bin/config_generate
+sed -i '/uci commit system/i\uci set system.@system[0].hostname='NibiruWrt'' package/lean/default-settings/files/zzz-default-settings
+sed -i "s/OpenWrt /KoNan @ NibiruWrt /g" package/lean/default-settings/files/zzz-default-settings
